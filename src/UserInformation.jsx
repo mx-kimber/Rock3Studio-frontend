@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-export function UsersIndex() {
+export function UserInformation() {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
@@ -17,7 +17,7 @@ export function UsersIndex() {
 
   return (
     <div>
-      <h1>Users Index</h1>
+      <h1>User Information</h1>
  
         {users.map((user) => (
           <div key={user.id}>
@@ -31,4 +31,4 @@ export function UsersIndex() {
   );
 }
 
-export default UsersIndex;
+export default UserInformation;
