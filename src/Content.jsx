@@ -1,7 +1,7 @@
 import { Login } from "./Login";
 import { Logout } from "./Logout";
 import { Signup } from "./Signup";
-import { UserInformation } from "./UserInformation";
+import { UsersIndex } from "./UsersIndex";
 
 export function Content() {
 
@@ -12,7 +12,7 @@ export function Content() {
       <Signup />
       <Login />
       <Logout />
-      <UserInformation />
+      <UsersIndex />
     </div>
   )
 }

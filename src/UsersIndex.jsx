@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-export function UserInformation() {
+export function UsersIndex() {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
@@ -31,4 +31,4 @@ export function UserInformation() {
   );
 }
 
-export default UserInformation;
+export default UsersIndex;
