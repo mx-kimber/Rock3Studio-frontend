@@ -1,4 +1,6 @@
 import { Logout } from "./Logout";
+import { UserContext } from "./UserContext";
+import React, { useContext } from "react";
 
 export function Header() {
   let authenticationLinks;
@@ -14,14 +16,31 @@ export function Header() {
 
     authenticationLinks = <Logout />;
   }
-
+  const { currentUser } = useContext(UserContext);
   return (
     <header>
       <nav>
-        <button onClick={() => window.location.href = '/'}>Home</button>  
-        <button onClick={() => window.location.href = '/'}>Collection</button>  
-        {authenticationLinks}  
+        
+        
+        <div>
+          <button onClick={() => window.location.href = '#'}>Home</button>  </div>
+        <div>
+          <button onClick={() => window.location.href = '/collection'}>Collection</button>  
+        </div>
+        <div>
+          <button onClick={() => window.location.href = '/profile_settings'}>Settings</button>  
+        </div>
+        <div className="container-row outline2">
+          
+            {authenticationLinks} 
+          {/* {currentUser ? `${currentUser.user_name}` : null} */}
+        
+          
+        </div>
+      
+        
       </nav>
+      
     </header>
   );
 }

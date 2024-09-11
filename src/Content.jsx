@@ -1,26 +1,29 @@
 import { Login } from "./Login";
-import { Logout } from "./Logout";
 import { Signup } from "./Signup";
 import { UserShow } from "./UserShow";
-import { UserContext } from "./UserContext";
-import React, { useContext } from "react";
+// import { UserContext } from "./UserContext";
+// import React, { useContext } from "react";
+import { Routes, Route } from "react-router-dom";
+import { Collection  }from "./Collection";
 
 export function Content() {
 
-  const { currentUser } = useContext(UserContext);
+  // const { currentUser } = useContext(UserContext);
 
 
   return (
     <div>
-      <div>
+      {/* <div>
         <h1> {currentUser ? `Welcome, ${currentUser.user_name}!` : 'Welcome, Guest!'} </h1>
-      </div>
-      
-      <Signup />
-      <Login />
-      <Logout />
-      <UserShow />
-      
+      </div> */}
+      <div>
+      <Routes>
+        <Route path="/Signup" element={<Signup/>} />
+        <Route path="/Login" element={<Login />} />
+        <Route path="/profile_settings" element={<UserShow />} />
+        <Route path="/collection" element={<Collection />} />
+      </Routes>
+    </div>
     </div>
   )
 }
