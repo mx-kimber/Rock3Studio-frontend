@@ -46,6 +46,22 @@ export function UserEdit({ onClose }) {
     }
   };
 
+  const handleDeleteAccount = async () => {
+    if (!window.confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+      return;
+    }
+
+    try {
+      localStorage.removeItem('jwt'); 
+      setCurrentUser(null);
+      await axios.delete('http://localhost:3000/users/current_user.json');
+      
+      if (onClose) onClose(); 
+    } catch (error) {
+      setErrors([error.response?.data.message || 'An error occurred while deleting your account.']);
+    }
+  };
+
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -98,6 +114,13 @@ export function UserEdit({ onClose }) {
         </div>
         <button type="submit">Update</button>
       </form>
+
+      <button
+        style={{ backgroundColor: 'red', color: 'white' }}
+        onClick={handleDeleteAccount}
+      >
+        Delete Account
+      </button>
     </div>
   );
 }
