@@ -15,6 +15,7 @@ export function UserShow() {
   if (!currentUser) {
     return <div>No user data available</div>;
   }
+
   const handleCloseModal = () => {
     setModalVisible(false);
     setModalContent(null);
@@ -22,7 +23,7 @@ export function UserShow() {
 
   const handleUserEditModal = () => {
     setModalVisible(true);
-    setModalContent(<UserEdit />);
+    setModalContent(<UserEdit onClose={handleCloseModal} />);
   };
 
   return (
@@ -31,12 +32,13 @@ export function UserShow() {
       <p><strong>Full Name:</strong> {currentUser.full_name}</p>
       <p><strong>Email:</strong> {currentUser.email}</p>
       <p><strong>Username:</strong> {currentUser.user_name}</p>
-      <button onClick={handleUserEditModal}>Update Information</button>
-      <Modal show={modalVisible} onClose={handleCloseModal}>
-          {modalContent}
-        </Modal>
+      
+      <button onClick={handleUserEditModal}>Edit Profile</button>
+      
+      <Modal show={modalVisible} onClose={handleCloseModal} >
+        {modalContent}
+      </Modal>
     </div>
-    
   );
 }
 
