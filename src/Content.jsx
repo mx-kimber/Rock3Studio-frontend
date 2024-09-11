@@ -1,7 +1,7 @@
 import { Login } from "./Login";
 import { Logout } from "./Logout";
 import { Signup } from "./Signup";
-import { UsersIndex } from "./UsersIndex";
+import { UserShow } from "./UserShow";
 import { UserContext } from "./UserContext";
 import React, { useContext } from "react";
 
@@ -12,7 +12,6 @@ export function Content() {
 
   return (
     <div>
-      
       <div>
         <h1> {currentUser ? `Welcome, ${currentUser.user_name}!` : 'Welcome, Guest!'} </h1>
       </div>
@@ -20,7 +19,7 @@ export function Content() {
       <Signup />
       <Login />
       <Logout />
-      <UsersIndex />
+      <UserShow />
       
     </div>
   )
