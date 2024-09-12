@@ -20,8 +20,8 @@ export function AddRock({ onRockAdded, onClose }) {
       .then((response) => {
         console.log(response.data);
         event.target.reset();
-        onRockAdded(); 
-        if (onClose) onClose(); 
+        if (onRockAdded) onRockAdded();
+        if (onClose) onClose();
         setLoading(false);
       })
       .catch((error) => {
