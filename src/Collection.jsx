@@ -32,7 +32,7 @@ export function Collection() {
       Collection
       <div>
         <button onClick={handleNewRockModal}>
-          New Rock
+          Add New Rock
         </button>
       </div>
 

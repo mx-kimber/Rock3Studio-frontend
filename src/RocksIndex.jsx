@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { UserContext } from './UserContext';
+import RockShow from './RockShow';
 
 export function RocksIndex({ reload }) {
   const { currentUser } = useContext(UserContext);
   const [rocks, setRocks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [selectedRockId, setSelectedRockId] = useState(null);
 
   useEffect(() => {
     if (currentUser) {
@@ -26,6 +28,14 @@ export function RocksIndex({ reload }) {
     }
   }, [currentUser, reload]);
 
+  const handleViewRock = (rockId) => {
+    setSelectedRockId(rockId);
+  };
+
+  const handleBackToIndex = () => {
+    setSelectedRockId(null);
+  };
+
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -40,37 +50,37 @@ export function RocksIndex({ reload }) {
 
   return (
     <div>
-      <h1>Rocks collected</h1>
-      <ul>
-        {rocks.map(rock => (
-          <li key={rock.id}>
-            <h2>{rock.rock_name}</h2>
-            <p>Material: {rock.material}</p>
-            <p>Weight: {rock.weight} {rock.weight_unit}</p>
-            <p>Location: {rock.location}</p>
-            <p>Notes: {rock.notes}</p>
-            <p>Color: {rock.color}</p>
-            <p>Condition: {rock.condition}</p>
-            <p>Dimensions: {rock.dimensions}</p>
-            <p>Source: {rock.source}</p>
-            <p>Category: {rock.category}</p>
-            <p>Hardness: {rock.hardness}</p>
-            <p>Price: ${rock.price}</p>
-            {rock.photos.length > 0 && (
-              <div>
-                <h3>Photos:</h3>
-                <ul>
-                  {rock.photos.map(photo => (
-                    <li key={photo.id}>
-                      <img src={photo.url} alt={`Photo of ${rock.rock_name}`} style={{ width: '200px' }} />
-                    </li>
-                  ))}
-                </ul>
+      {selectedRockId ? (
+        <RockShow rockId={selectedRockId} onClose={handleBackToIndex} />
+      ) : (
+        <div>
+          <h1>Rocks collected</h1>
+          <div>
+
+            
+            {rocks.map(rock => (
+
+              <div key={rock.id}>
+                <div>
+                  {rock.photos.length > 0 ? (
+                    <img src={rock.photos[0].url} alt={`Photo of ${rock.rock_name}`} style={{ width: '100px' }} />
+                  ) : (
+                    <div style={{ width: '50px', height: '50px', backgroundColor: 'black' }} />
+                  )}
+                </div>
+                <div>{rock.rock_name}</div>
+                <p>Material: {rock.material}</p>
+                <p>Category: {rock.category}</p>
+         
+                
+                <button onClick={() => handleViewRock(rock.id)}>
+                  View Rock
+                </button>
               </div>
-            )}
-          </li>
-        ))}
-      </ul>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
