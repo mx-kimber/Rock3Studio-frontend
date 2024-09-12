@@ -2,6 +2,7 @@ import { UserContext } from "./UserContext";
 import React, { useContext, useState } from "react";
 import { Modal } from "./Modal";
 import { UserEdit } from "./UserEdit";
+import { ChangePassword } from "./ChangePassword";
 
 export function UserShow() {
   const { currentUser, loading } = useContext(UserContext);
@@ -26,6 +27,11 @@ export function UserShow() {
     setModalContent(<UserEdit onClose={handleCloseModal} />);
   };
 
+  const handleChangePassword = () => {
+    setModalVisible(true);
+    setModalContent(<ChangePassword />);
+  }
+
   return (
     <div>
       <h1>User Profile</h1>
@@ -38,6 +44,9 @@ export function UserShow() {
       <Modal show={modalVisible} onClose={handleCloseModal} >
         {modalContent}
       </Modal>
+      <div>
+        <button onClick={handleChangePassword}>Change Password</button>
+      </div>
     </div>
   );
 }
