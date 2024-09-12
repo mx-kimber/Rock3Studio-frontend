@@ -8,33 +8,34 @@ export function Collection() {
   const [modalContent, setModalContent] = useState(null);
   const [reload, setReload] = useState(false);
 
-  const handleNewRockModal = () => {
-    setModalVisible(true);
-    setModalContent(
-      <AddRock 
-        onRockAdded={handleRockAdded}
-        onClose={handleCloseModal}
-      />
-    );
-  };
+  // const handleNewRockModal = () => {
+  //   setModalVisible(true);
+  //   setModalContent(
+  //     <AddRock 
+  //       onRockAdded={handleRockAdded}
+  //       onClose={handleCloseModal}
+  //     />
+  //   );
+  // };
+
 
   const handleCloseModal = () => {
     setModalVisible(false);
     setModalContent(null);
   };
 
-  const handleRockAdded = () => {
-    setReload(prev => !prev);
-  };
+  // const handleRockAdded = () => {
+  //   setReload(prev => !prev);
+  // };
 
   return (
     <div className="outline">
       Collection
-      <div>
+      {/* <div>
         <button onClick={handleNewRockModal}>
           Add New Rock
         </button>
-      </div>
+      </div> */}
 
       <div>
         <RocksIndex reload={reload} />

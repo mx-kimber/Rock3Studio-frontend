@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-export function RockShow({ rockId, onClose }) {
+export function RockShow({ rockId, onClose, reload }) {
   const [rock, setRock] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -20,6 +20,24 @@ export function RockShow({ rockId, onClose }) {
 
     fetchRock();
   }, [rockId]);
+
+  const handleDelete = async () => {
+    if (window.confirm('Are you sure you want to delete this rock?')) {
+      try {
+        await axios.delete(`http://localhost:3000/rocks/${rockId}.json`);
+        alert('Rock deleted successfully.');
+        if (onClose) onClose(); 
+        if (reload) reload(); 
+      } catch (error) {
+        alert('An error occurred while deleting the rock.');
+      }
+    }
+  };
+
+  const handleEdit = () => {
+    
+    alert('Edit functionality is not implemented.');
+  };
 
   if (loading) {
     return <div>Loading...</div>;
@@ -59,6 +77,11 @@ export function RockShow({ rockId, onClose }) {
             </li>
           )}
         </ul>
+      </div>
+
+      <div>
+        <button onClick={handleEdit}>Edit Rock</button>
+        <button onClick={handleDelete}>Delete Rock</button>
       </div>
     </div>
   );

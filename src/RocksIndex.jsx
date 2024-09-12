@@ -1,79 +1,81 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { UserContext } from './UserContext';
+import AddRock from './AddRock';
 import RockShow from './RockShow';
-import Modal from './Modal'; 
 
-export function RocksIndex({ reload }) {
-  const { currentUser } = useContext(UserContext);
+export function RocksIndex() {
   const [rocks, setRocks] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [modalVisible, setModalVisible] = useState(false);
-  const [modalContent, setModalContent] = useState(null);
+  const [showAddRock, setShowAddRock] = useState(false);
+  const [selectedRockId, setSelectedRockId] = useState(null);
+  const [showRockShow, setShowRockShow] = useState(false);
 
   useEffect(() => {
-    if (currentUser) {
-      const fetchRocks = async () => {
-        try {
-          const response = await axios.get('http://localhost:3000/rocks.json');
-          const sortedRocks = response.data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-          setRocks(sortedRocks);
-        } catch (error) {
-          setError(error.response?.data?.message || 'An error occurred');
-        } finally {
-          setLoading(false);
-        }
-      };
+    fetchRocks();
+  }, []);
 
-      fetchRocks();
+  const fetchRocks = async () => {
+    try {
+      const response = await axios.get('http://localhost:3000/rocks.json');
+      setRocks(response.data);
+    } catch (error) {
+      console.error('An error occurred while fetching rocks.');
     }
-  }, [currentUser, reload]);
-
-  const handleViewRock = (rockId) => {
-    setModalContent(
-      <RockShow rockId={rockId} onClose={() => setModalVisible(false)} />
-    );
-    setModalVisible(true);
   };
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+  const handleRockAdded = () => {
+    fetchRocks();
+    setShowAddRock(false); 
+  };
 
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
+  const handleAddRockClick = () => {
+    setShowAddRock(true);
+  };
 
-  if (!rocks.length) {
-    return <div>No rocks found in your collection.</div>;
-  }
+  const handleCloseAddRock = () => {
+    setShowAddRock(false);
+  };
+
+  const handleRockClick = (rockId) => {
+    setSelectedRockId(rockId);
+    setShowRockShow(true);
+  };
+
+  const handleCloseRockShow = () => {
+    setShowRockShow(false);
+    setSelectedRockId(null);
+  };
 
   return (
     <div>
-      <h1>Rocks collected</h1>
-      <div>
+      <h1>Rocks List</h1>
+      <button onClick={handleAddRockClick}>Add New Rock</button>
+      <ul>
         {rocks.map(rock => (
-          <div key={rock.id}>
-            <div>
-              {rock.photos.length > 0 ? (
-                <img src={rock.photos[0].url} alt={`Photo of ${rock.rock_name}`} style={{ width: '100px' }} />
-              ) : (
-                <div style={{ width: '50px', height: '50px', backgroundColor: 'black' }} />
-              )}
-            </div>
-            <div>{rock.rock_name}</div>
-            <p>Material: {rock.material}</p>
-            <p>Category: {rock.category}</p>
-            <button onClick={() => handleViewRock(rock.id)}>
-              View Rock
-            </button>
-          </div>
+          <li key={rock.id}>
+            {rock.rock_name}
+            <button onClick={() => handleRockClick(rock.id)}>Show Details</button>
+          </li>
         ))}
-      </div>
-      <Modal show={modalVisible} onClose={() => setModalVisible(false)}>
-        {modalContent}
-      </Modal>
+      </ul>
+
+      {showAddRock && (
+        <div className="modal">
+          <AddRock
+            onRockAdded={handleRockAdded}
+            onClose={handleCloseAddRock}
+          />
+        </div>
+      )}
+
+      {showRockShow && (
+        <div className="modal">
+          <RockShow
+            rockId={selectedRockId}
+            onClose={handleCloseRockShow}
+            reload={fetchRocks}
+          />
+        </div>
+      )}
     </div>
   );
 }
