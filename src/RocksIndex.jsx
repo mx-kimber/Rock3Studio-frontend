@@ -2,13 +2,15 @@ import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { UserContext } from './UserContext';
 import RockShow from './RockShow';
+import Modal from './Modal'; 
 
 export function RocksIndex({ reload }) {
   const { currentUser } = useContext(UserContext);
   const [rocks, setRocks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [selectedRockId, setSelectedRockId] = useState(null);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalContent, setModalContent] = useState(null);
 
   useEffect(() => {
     if (currentUser) {
@@ -29,11 +31,10 @@ export function RocksIndex({ reload }) {
   }, [currentUser, reload]);
 
   const handleViewRock = (rockId) => {
-    setSelectedRockId(rockId);
-  };
-
-  const handleBackToIndex = () => {
-    setSelectedRockId(null);
+    setModalContent(
+      <RockShow rockId={rockId} onClose={() => setModalVisible(false)} />
+    );
+    setModalVisible(true);
   };
 
   if (loading) {
@@ -50,37 +51,29 @@ export function RocksIndex({ reload }) {
 
   return (
     <div>
-      {selectedRockId ? (
-        <RockShow rockId={selectedRockId} onClose={handleBackToIndex} />
-      ) : (
-        <div>
-          <h1>Rocks collected</h1>
-          <div>
-
-            
-            {rocks.map(rock => (
-
-              <div key={rock.id}>
-                <div>
-                  {rock.photos.length > 0 ? (
-                    <img src={rock.photos[0].url} alt={`Photo of ${rock.rock_name}`} style={{ width: '100px' }} />
-                  ) : (
-                    <div style={{ width: '50px', height: '50px', backgroundColor: 'black' }} />
-                  )}
-                </div>
-                <div>{rock.rock_name}</div>
-                <p>Material: {rock.material}</p>
-                <p>Category: {rock.category}</p>
-         
-                
-                <button onClick={() => handleViewRock(rock.id)}>
-                  View Rock
-                </button>
-              </div>
-            ))}
+      <h1>Rocks collected</h1>
+      <div>
+        {rocks.map(rock => (
+          <div key={rock.id}>
+            <div>
+              {rock.photos.length > 0 ? (
+                <img src={rock.photos[0].url} alt={`Photo of ${rock.rock_name}`} style={{ width: '100px' }} />
+              ) : (
+                <div style={{ width: '50px', height: '50px', backgroundColor: 'black' }} />
+              )}
+            </div>
+            <div>{rock.rock_name}</div>
+            <p>Material: {rock.material}</p>
+            <p>Category: {rock.category}</p>
+            <button onClick={() => handleViewRock(rock.id)}>
+              View Rock
+            </button>
           </div>
-        </div>
-      )}
+        ))}
+      </div>
+      <Modal show={modalVisible} onClose={() => setModalVisible(false)}>
+        {modalContent}
+      </Modal>
     </div>
   );
 }

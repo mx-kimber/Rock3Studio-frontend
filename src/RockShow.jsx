@@ -31,7 +31,6 @@ export function RockShow({ rockId, onClose }) {
 
   return (
     <div>
-      <button onClick={onClose}>Back to Rocks List</button>
       <h2>{rock.rock_name}</h2>
       <p>Material: {rock.material}</p>
       <p>Weight: {rock.weight} {rock.weight_unit}</p>
@@ -50,15 +49,14 @@ export function RockShow({ rockId, onClose }) {
         <ul>
           {rock.photos.length > 0 ? (
             rock.photos.map(photo => (
-              <div key={photo.id}>
+              <li key={photo.id}>
                 <img src={photo.url} alt={`Photo of ${rock.rock_name}`} style={{ width: '200px' }} />
-              </div>
+              </li>
             ))
           ) : (
-            <div>
-            
-              <div style={{ width: '50px', height: '50px', backgroundColor: 'black' }} />
-            </div>
+            <li>
+              <div style={{ width: '50px', height: '50px', backgroundColor: 'blue' }} />
+            </li>
           )}
         </ul>
       </div>
