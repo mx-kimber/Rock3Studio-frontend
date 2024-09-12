@@ -55,3 +55,15 @@ nav {
   flex-direction: row;
   justify-content: space-between;
 }
+
+.container-row {
+  display: flex;
+  flex-direction: row;
+  gap:10px;
+}
+
+.container-col {
+  display: flex;
+  flex-direction: column;
+  gap:10px
+}
