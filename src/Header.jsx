@@ -1,11 +1,33 @@
 import { Logout } from "./Logout";
 import { UserContext } from "./UserContext";
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 export function Header() {
-  let authenticationLinks;
-  if (localStorage.jwt === undefined) {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const { currentUser } = useContext(UserContext);
 
+  useEffect(() => {
+    const token = localStorage.getItem('jwt');
+    const tokenTimestamp = localStorage.getItem('tokenTimestamp');
+
+    if (token && tokenTimestamp) {
+      const currentTime = Date.now();
+      const tokenAge = currentTime - parseInt(tokenTimestamp, 10);
+
+      const tokenExpired = tokenAge > 24 * 60 * 60 * 1000;
+
+      if (!tokenExpired) {
+        setIsAuthenticated(true);
+      } else {
+        localStorage.removeItem('jwt');
+        localStorage.removeItem('tokenTimestamp');
+      }
+    }
+  }, []);
+
+  let authenticationLinks;
+
+  if (!isAuthenticated) {
     authenticationLinks = (
       <>
         <button onClick={() => window.location.href = '/login'}>Login</button>  
@@ -13,34 +35,26 @@ export function Header() {
       </>
     );
   } else {
-
     authenticationLinks = <Logout />;
   }
-  const { currentUser } = useContext(UserContext);
+
   return (
     <header>
       <nav>
-        
-        
         <div>
-          <button onClick={() => window.location.href = '#'}>Home</button>  </div>
-        <div>
-          <button onClick={() => window.location.href = '/collection'}>Collection</button>  
+          <button onClick={() => window.location.href = '#'}>Home</button>
         </div>
         <div>
-          <button onClick={() => window.location.href = '/profile_settings'}>Settings</button>  
+          <button onClick={() => window.location.href = '/collection'}>Collection</button>
+        </div>
+        <div>
+          <button onClick={() => window.location.href = '/profile_settings'}>Settings</button>
         </div>
         <div className="container-row outline2">
-          
-            {authenticationLinks} 
+          {authenticationLinks}
           {/* {currentUser ? `${currentUser.user_name}` : null} */}
-        
-          
         </div>
-      
-        
       </nav>
-      
     </header>
   );
 }
