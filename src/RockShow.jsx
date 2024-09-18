@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import Modal from './Modal';
+import RockEdit from './RockEdit'; 
 
 export function RockShow({ rockId, onClose, reload }) {
   const [rock, setRock] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalContent, setModalContent] = useState(null);
 
   useEffect(() => {
     const fetchRock = async () => {
@@ -34,9 +38,16 @@ export function RockShow({ rockId, onClose, reload }) {
     }
   };
 
-  const handleEdit = () => {
-    
-    alert('Edit functionality is not implemented.');
+  const handleCloseModal = () => {
+    setModalVisible(false);
+    setModalContent(null);
+  };
+
+  const handleRockEditModal = () => {
+    setModalVisible(true);
+    setModalContent(
+      <RockEdit rock={rock} onClose={handleCloseModal} reload={reload} />
+    );
   };
 
   if (loading) {
@@ -80,9 +91,15 @@ export function RockShow({ rockId, onClose, reload }) {
       </div>
 
       <div>
-        <button onClick={handleEdit}>Edit Rock</button>
+        <button onClick={handleRockEditModal}>Edit Rock</button> 
         <button onClick={handleDelete}>Delete Rock</button>
       </div>
+
+      {modalVisible && (
+        <Modal show={modalVisible} onClose={handleCloseModal} >
+        {modalContent}
+      </Modal>
+      )}
     </div>
   );
 }
