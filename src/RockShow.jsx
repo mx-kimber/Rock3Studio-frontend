@@ -49,21 +49,7 @@ export function RockShow({ rockId, onClose, reload }) {
 
   return (
     <div>
-      
       <h2>{rock.rock_name}</h2>
-      <div>
-          {rock.photos.length > 0 ? (
-            rock.photos.map(photo => (
-              <div key={photo.id}>
-                <img src={photo.url} alt={`Photo of ${rock.rock_name}`} style={{ width: '200px' }} />
-              </div>
-            ))
-          ) : (
-            <div>
-              <div style={{ width: '50px', height: '50px', backgroundColor: 'blue' }} />
-            </div>
-          )}
-        </div>
       <p>Material: {rock.material}</p>
       <p>Weight: {rock.weight} {rock.weight_unit}</p>
       <p>Location: {rock.location}</p>
@@ -78,7 +64,19 @@ export function RockShow({ rockId, onClose, reload }) {
 
       <div>
         <h3>Photos:</h3>
-        
+        <div>
+          {rock.photos.length > 0 ? (
+            rock.photos.map(photo => (
+              <div key={photo.id}>
+                <img src={photo.url} alt={`Photo of ${rock.rock_name}`} style={{ width: '200px' }} />
+              </div>
+            ))
+          ) : (
+            <div>
+              <div style={{ width: '50px', height: '50px', backgroundColor: 'blue' }} />
+            </div>
+          )}
+        </div>
       </div>
 
       <div>

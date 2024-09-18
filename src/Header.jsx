@@ -1,40 +1,23 @@
 import { Logout } from "./Logout";
 import { UserContext } from "./UserContext";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 
 export function Header() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const { currentUser } = useContext(UserContext);
-
-  useEffect(() => {
-    const token = localStorage.getItem('jwt');
-    const tokenTimestamp = localStorage.getItem('tokenTimestamp');
-
-    if (token && tokenTimestamp) {
-      const currentTime = Date.now();
-      const tokenAge = currentTime - parseInt(tokenTimestamp, 10);
-
-      const tokenExpired = tokenAge > 24 * 60 * 60 * 1000;
-
-      if (!tokenExpired) {
-        setIsAuthenticated(true);
-      } else {
-        localStorage.removeItem('jwt');
-        localStorage.removeItem('tokenTimestamp');
-      }
-    }
-  }, []);
+  const navigate = useNavigate();
 
   let authenticationLinks;
 
-  if (!isAuthenticated) {
+  if (!currentUser) {
     authenticationLinks = (
       <>
-        <button onClick={() => window.location.href = '/login'}>Login</button>  
-        <button onClick={() => window.location.href = '/signup'}>Signup</button>
+        <button onClick={() => navigate('/login')}>Login</button>  
+        <button onClick={() => navigate('/signup')}>Signup</button>
       </>
     );
   } else {
+  
     authenticationLinks = <Logout />;
   }
 
@@ -42,17 +25,16 @@ export function Header() {
     <header>
       <nav>
         <div>
-          <button onClick={() => window.location.href = '#'}>Home</button>
+          <button onClick={() => navigate('/')}>Home</button>
         </div>
         <div>
-          <button onClick={() => window.location.href = '/collection'}>Collection</button>
+          <button onClick={() => navigate('/collection')}>Collection</button>  
         </div>
         <div>
-          <button onClick={() => window.location.href = '/profile_settings'}>Settings</button>
+          <button onClick={() => navigate('/profile_settings')}>Settings</button>  
         </div>
         <div className="container-row outline2">
           {authenticationLinks}
-          {/* {currentUser ? `${currentUser.user_name}` : null} */}
         </div>
       </nav>
     </header>

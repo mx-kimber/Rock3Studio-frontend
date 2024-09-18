@@ -25,7 +25,7 @@ export function Login() {
         localStorage.setItem("jwt", response.data.jwt);
         setCurrentUser(response.data.user);
         event.target.reset();
-        window.location.href = "/"; // note to self: hide modal here
+        window.location.href = "/collection"; // note to self: hide modal here
       })
       .catch((error) => {
         console.log(error.response);
