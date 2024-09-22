@@ -8,21 +8,23 @@ export function UserProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const jwt = localStorage.getItem("jwt");
+    const jwt = sessionStorage.getItem("jwt");
     if (jwt) {
       axios.defaults.headers.common["Authorization"] = `Bearer ${jwt}`;
     }
 
-    axios
-      .get("http://localhost:3000/users/current_user.json")
-      .then((response) => {
+    const fetchUser = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/users/current_user.json");
         setCurrentUser(response.data);
-        setLoading(false);
-      })
-      .catch((error) => {
+      } catch (error) {
         setCurrentUser(null);
+      } finally {
         setLoading(false);
-      });
+      }
+    };
+
+    fetchUser();
   }, []);
 
   return (
