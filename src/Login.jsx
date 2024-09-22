@@ -3,7 +3,7 @@ import axios from "axios";
 import React, { useContext, useState } from "react";
 import { UserContext } from "./UserContext";
 
-const jwt = localStorage.getItem("jwt");
+const jwt = sessionStorage.getItem("jwt");
 if (jwt) {
   axios.defaults.headers.common["Authorization"] = `Bearer ${jwt}`;
 }
@@ -22,7 +22,7 @@ export function Login() {
       .then((response) => {
         console.log(response.data);
         axios.defaults.headers.common["Authorization"] = "Bearer " + response.data.jwt;
-        localStorage.setItem("jwt", response.data.jwt);
+        sessionStorage.setItem("jwt", response.data.jwt);
         setCurrentUser(response.data.user);
         event.target.reset();
         window.location.href = "/collection"; // note to self: hide modal here

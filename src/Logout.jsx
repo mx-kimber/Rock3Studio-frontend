@@ -8,7 +8,7 @@ export function Logout() {
   const handleClick = (event) => {
     event.preventDefault();
     delete axios.defaults.headers.common["Authorization"];
-    localStorage.removeItem("jwt"); 
+    sessionStorage.removeItem("jwt"); 
     setCurrentUser(null);
     window.location.href = "/login";
   };

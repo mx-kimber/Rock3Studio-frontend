@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import AddRock from './AddRock';
+import RockAdd from './RockAdd';
 import RockShow from './RockShow';
 
 export function RocksIndex() {
   const [rocks, setRocks] = useState([]);
-  const [showAddRock, setShowAddRock] = useState(false);
+  const [showRockAdd, setShowRockAdd] = useState(false);
   const [selectedRockId, setSelectedRockId] = useState(null);
   const [showRockShow, setShowRockShow] = useState(false);
 
@@ -24,15 +24,15 @@ export function RocksIndex() {
 
   const handleRockAdded = () => {
     fetchRocks();
-    setShowAddRock(false); 
+    setShowRockAdd(false); 
   };
 
-  const handleAddRockClick = () => {
-    setShowAddRock(true);
+  const handleRockAddClick = () => {
+    setShowRockAdd(true);
   };
 
-  const handleCloseAddRock = () => {
-    setShowAddRock(false);
+  const handleCloseRockAdd = () => {
+    setShowRockAdd(false);
   };
 
   const handleRockClick = (rockId) => {
@@ -48,7 +48,7 @@ export function RocksIndex() {
   return (
     <div>
       <h1>Rocks List</h1>
-      <button onClick={handleAddRockClick}>Add New Rock</button>
+      <button onClick={handleRockAddClick}>Add New Rock</button>
       <div>
         {rocks.map(rock => (
           <div key={rock.id}>
@@ -67,11 +67,11 @@ export function RocksIndex() {
         ))}
       </div>
 
-      {showAddRock && (
+      {showRockAdd && (
         <div className="modal">
-          <AddRock
+          <RockAdd
             onRockAdded={handleRockAdded}
-            onClose={handleCloseAddRock}
+            onClose={handleCloseRockAdd}
           />
         </div>
       )}

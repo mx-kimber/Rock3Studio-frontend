@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import axios from 'axios';
 import { UserContext } from './UserContext';
 
-export function AddRock({ onRockAdded, onClose }) {
+export function RockAdd({ onRockAdded, onClose }) {
   const { currentUser } = useContext(UserContext);
   const [errors, setErrors] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -131,7 +131,7 @@ export function AddRock({ onRockAdded, onClose }) {
   );
 }
 
-export default AddRock;
+export default RockAdd;
 
 // {rock.photos.length > 0 && (
 //   <div>
