@@ -10,18 +10,18 @@ export function RockShow({ rockId, onClose, reload }) {
   const [modalVisible, setModalVisible] = useState(false);
   const [modalContent, setModalContent] = useState(null);
 
-  useEffect(() => {
-    const fetchRock = async () => {
-      try {
-        const response = await axios.get(`http://localhost:3000/rocks/${rockId}.json`);
-        setRock(response.data);
-      } catch (error) {
-        setError(error.response?.data?.message || 'An error occurred');
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchRock = async () => {
+    try {
+      const response = await axios.get(`http://localhost:3000/rocks/${rockId}.json`);
+      setRock(response.data);
+    } catch (error) {
+      setError(error.response?.data?.message || 'An error occurred');
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchRock();
   }, [rockId]);
 
@@ -30,8 +30,8 @@ export function RockShow({ rockId, onClose, reload }) {
       try {
         await axios.delete(`http://localhost:3000/rocks/${rockId}.json`);
         alert('Rock deleted successfully.');
-        if (onClose) onClose(); 
-        if (reload) reload(); 
+        if (onClose) onClose();
+        if (reload) reload();
       } catch (error) {
         alert('An error occurred while deleting the rock.');
       }
@@ -41,12 +41,20 @@ export function RockShow({ rockId, onClose, reload }) {
   const handleCloseModal = () => {
     setModalVisible(false);
     setModalContent(null);
+    reload();
   };
 
   const handleRockEditModal = () => {
     setModalVisible(true);
     setModalContent(
-      <RockEdit rock={rock} onClose={handleCloseModal} reload={reload} />
+      <RockEdit 
+        rock={rock} 
+        onClose={handleCloseModal} 
+        reload={() => { 
+          fetchRock();
+          reload();
+        }} 
+      />
     );
   };
 
@@ -96,9 +104,9 @@ export function RockShow({ rockId, onClose, reload }) {
       </div>
 
       {modalVisible && (
-        <Modal show={modalVisible} onClose={handleCloseModal} >
-        {modalContent}
-      </Modal>
+        <Modal show={modalVisible} onClose={handleCloseModal}>
+          {modalContent}
+        </Modal>
       )}
     </div>
   );

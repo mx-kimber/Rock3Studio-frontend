@@ -52,7 +52,7 @@ export function UserEdit({ onClose }) {
     }
 
     try {
-      localStorage.removeItem('jwt'); 
+      sessionStorage.removeItem('jwt'); 
       setCurrentUser(null);
       await axios.delete('http://localhost:3000/users/current_user.json');
       
