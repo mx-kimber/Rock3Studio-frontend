@@ -3,17 +3,25 @@ import axios from 'axios';
 import { UserContext } from './UserContext';
 
 export function RockAdd({ onRockAdded, onClose }) {
-  const { currentUser } = useContext(UserContext);
+  const { currentUser, loading } = useContext(UserContext);
   const [errors, setErrors] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [formLoading, setFormLoading] = useState(false);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!currentUser) {
+    return <div>No user data available</div>;
+  }
 
   const handleSubmit = (event) => {
     event.preventDefault();
     setErrors([]);
-    setLoading(true);
+    setFormLoading(true);
 
     const formData = new FormData(event.target);
-    formData.append('user_id', currentUser.id); 
+    formData.append('user_id', currentUser.id);
 
     axios
       .post("http://localhost:3000/rocks.json", formData)
@@ -22,15 +30,14 @@ export function RockAdd({ onRockAdded, onClose }) {
         event.target.reset();
         if (onRockAdded) onRockAdded();
         if (onClose) onClose();
-        setLoading(false);
+        setFormLoading(false);
       })
       .catch((error) => {
         console.log(error.response?.data?.errors);
         setErrors(error.response?.data?.errors || ['An error occurred']);
-        setLoading(false);
+        setFormLoading(false);
       });
   };
-  
 
   return (
     <div>
@@ -123,8 +130,8 @@ export function RockAdd({ onRockAdded, onClose }) {
             <input type="number" name="price" />
           </label>
         </div>
-        <button type="submit" disabled={loading}>
-          {loading ? 'Adding...' : 'Add Rock'}
+        <button type="submit" disabled={formLoading}>
+          {formLoading ? 'Adding...' : 'Add Rock'}
         </button>
       </form>
     </div>

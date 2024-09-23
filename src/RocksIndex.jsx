@@ -1,17 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import RockAdd from './RockAdd';
 import RockShow from './RockShow';
+import { UserContext } from './UserContext';
 
 export function RocksIndex() {
+  const { currentUser, loading } = useContext(UserContext); 
   const [rocks, setRocks] = useState([]);
   const [showRockAdd, setShowRockAdd] = useState(false);
   const [selectedRockId, setSelectedRockId] = useState(null);
   const [showRockShow, setShowRockShow] = useState(false);
 
   useEffect(() => {
-    fetchRocks();
-  }, []);
+    if (currentUser) {
+      fetchRocks();
+    }
+  }, [currentUser]);
 
   const fetchRocks = async () => {
     try {
@@ -44,6 +48,14 @@ export function RocksIndex() {
     setShowRockShow(false);
     setSelectedRockId(null);
   };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!currentUser) {
+    return <div>No user data available</div>;
+  }
 
   return (
     <div>
@@ -88,4 +100,5 @@ export function RocksIndex() {
     </div>
   );
 }
+
 export default RocksIndex;
