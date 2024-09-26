@@ -25,7 +25,7 @@ export function Login() {
         sessionStorage.setItem("jwt", response.data.jwt);
         setCurrentUser(response.data.user);
         event.target.reset();
-        window.location.href = "/collection"; // note to self: hide modal here
+        window.location.href = "/collection";
       })
       .catch((error) => {
         console.log(error.response);
@@ -55,3 +55,5 @@ export function Login() {
     </div>
   );
 }
+
+export default Login;
